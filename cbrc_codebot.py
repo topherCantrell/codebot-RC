@@ -1,5 +1,4 @@
 import botcore
-import time
 import machine
 
 uart = machine.UART(5,115200)
@@ -9,14 +8,10 @@ cmd = [0,0]
 pos = 0
 
 while True:
-    data = uart.read()
+    data = uart.read(1)
     if not data:
         continue
-    for g in data:
-        if g==255:
-            pos = 0
-            print('reset data')
-            continue
+    for g in data:        
         cmd[pos] = g
         pos+=1
         if pos==2:
