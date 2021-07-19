@@ -49,12 +49,3 @@ class Nunchuck:
         z = (raw[4]<<2) | ((raw[5]>>2) & 3)
         return (x,y,z)    
 
-
-def test():
-    nun1 = Nunchuck(sda=4,scl=5)   
-    #nun2 = Nunchuck(sda=12,scl=13) 
-    while True:
-        raw1 = nun1.get_raw()
-        #raw2 = nun2.get_raw()
-        print(nun1.get_joystick(raw1))
-        time.sleep(0.5)

@@ -1,24 +1,26 @@
 import botcore
 import machine
 
-uart = machine.UART(5,115200)
 botcore.motors.enable(True)
 
-cmd = [0,0]
-pos = 0
+# UART5 is connected to GPIO0 (rx) and GPIO1 (tx)
+uart = machine.UART(5,115200)
 
 while True:
-    data = uart.read(1)
-    if not data:
-        continue
-    for g in data:        
-        cmd[pos] = g
-        pos+=1
-        if pos==2:
-            pos = 0
-            left = cmd[0] - 128
-            right = cmd[1] - 128
-            print('motors',left,right)
-            botcore.motors.run(0,left)
-            botcore.motors.run(1,right)
+
+    # Get a value for the left motor
+    while not uart.any():
+        pass
+    left = uart.read(1)
+    left = left[0] - 128 # -128 to +127
+    
+    # Get a value for the right motor
+    while not uart.any():
+        pass
+    right = uart.read(1)
+    right = right[0] - 128 # -128 to +127
+
+    # Set the motors
+    botcore.motors.run(0,left)
+    botcore.motors.run(1,right)
         
